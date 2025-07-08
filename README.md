@@ -14,11 +14,46 @@ A Spring Boot web application that provides weather forecasts from multiple free
 
 - JDK 11
 - Gradle 7.6.4 (included via wrapper)
+- Docker (optional, for containerized deployment)
 
 ## Running the Application
 
+### Using Gradle
+
 ```bash
 ./gradlew bootRun
+```
+
+### Using Docker
+
+Build and run the Docker container:
+
+```bash
+# Build the Docker image
+docker build -t weather-app .
+
+# Run the container
+docker run -p 8080:8080 weather-app
+```
+
+### Using Docker Compose
+
+```bash
+# Build and run with Docker Compose
+docker-compose up --build
+
+# Run in detached mode
+docker-compose up -d
+```
+
+### Using the Helper Script
+
+```bash
+# Make the script executable
+chmod +x docker-build-run.sh
+
+# Run the script
+./docker-build-run.sh
 ```
 
 Visit http://localhost:8080 to access the application.
