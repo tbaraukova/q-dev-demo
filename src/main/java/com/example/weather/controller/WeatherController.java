@@ -15,8 +15,12 @@ import javax.validation.Valid;
 @Controller
 public class WeatherController {
     
+    private final WeatherService weatherService;
+    
     @Autowired
-    private WeatherService weatherService;
+    public WeatherController(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
     
     @GetMapping("/")
     public String index(Model model) {
