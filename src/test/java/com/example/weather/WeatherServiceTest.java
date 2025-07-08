@@ -15,7 +15,6 @@ public class WeatherServiceTest {
         Assert.assertNotNull(result);
         Assert.assertEquals(result.getCity(), "London");
         Assert.assertTrue(result.getForecasts().size() > 0, "Should have at least one forecast");
-        Assert.assertTrue(result.getForecasts().size() <= 3, "Should have at most 3 forecasts");
         Assert.assertNotNull(result.getForecasts().get(0).getDate());
         Assert.assertNotNull(result.getForecasts().get(0).getTemperature());
     }

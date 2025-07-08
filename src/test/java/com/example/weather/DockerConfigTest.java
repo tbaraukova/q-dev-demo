@@ -1,27 +1,23 @@
 package com.example.weather;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.testng.annotations.Test;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-@SpringBootTest
-@ActiveProfiles("docker")
 public class DockerConfigTest {
 
-    @Value("${server.port}")
-    private int serverPort;
-
-    @Value("${spring.thymeleaf.cache}")
-    private boolean thymeleafCache;
-
     @Test
-    public void testDockerProfileConfiguration() {
-        // Verify that the Docker profile loads the correct configuration
-        assertEquals(serverPort, 8080, "Server port should be 8080 in Docker profile");
-        assertTrue(thymeleafCache, "Thymeleaf cache should be enabled in Docker profile");
+    public void testDockerProfileConfiguration() throws IOException {
+        Properties props = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application-docker.properties")) {
+            props.load(input);
+        }
+        
+        assertEquals(props.getProperty("server.port"), "8080", "Server port should be 8080 in Docker profile");
+        assertEquals(props.getProperty("spring.thymeleaf.cache"), "true", "Thymeleaf cache should be enabled in Docker profile");
     }
 }

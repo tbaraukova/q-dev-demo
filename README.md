@@ -14,54 +14,66 @@ A Spring Boot web application that provides weather forecasts from multiple free
 
 - JDK 11
 - Gradle 7.6.4 (included via wrapper)
-- Docker (optional, for containerized deployment)
+- Podman (optional, for containerized deployment)
 
 ## Running the Application
 
 ### Using Gradle
 
+**Linux/macOS:**
 ```bash
 ./gradlew bootRun
 ```
 
-### Using Docker
-
-Build and run the Docker container:
-
-```bash
-# Build the Docker image
-docker build -t weather-app .
-
-# Run the container
-docker run -p 8080:8080 weather-app
+**Windows:**
+```cmd
+gradlew.bat bootRun
 ```
 
-### Using Docker Compose
+### Using Podman
+
+Build and run the Podman container:
 
 ```bash
-# Build and run with Docker Compose
-docker-compose up --build
+# Build the container image
+podman build -t weather-app .
+
+# Run the container
+podman run -p 8070:8080 weather-app
+```
+
+### Using Podman Compose
+
+```bash
+# Build and run with Podman Compose
+podman-compose up --build
 
 # Run in detached mode
-docker-compose up -d
+podman-compose up -d
 ```
 
 ### Using the Helper Script
 
 ```bash
 # Make the script executable
-chmod +x docker-build-run.sh
+chmod +x podman-build-run.sh
 
 # Run the script
-./docker-build-run.sh
+./podman-build-run.sh
 ```
 
 Visit http://localhost:8080 to access the application.
 
 ## Testing
 
+**Linux/macOS:**
 ```bash
 ./gradlew test
+```
+
+**Windows:**
+```cmd
+gradlew.bat test
 ```
 
 ## API Integration

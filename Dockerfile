@@ -2,21 +2,21 @@
 FROM adoptopenjdk:11-jdk-hotspot AS builder
 WORKDIR /app
 
-# Copy gradle files first for better caching
-COPY gradle/ gradle/
-COPY gradlew build.gradle ./
+# Install Gradle directly
+RUN apt-get update && apt-get install -y wget unzip && \
+    wget https://services.gradle.org/distributions/gradle-7.6.4-bin.zip && \
+    unzip gradle-7.6.4-bin.zip && \
+    mv gradle-7.6.4 /opt/gradle && \
+    rm gradle-7.6.4-bin.zip
 
-# Make the gradlew script executable
-RUN chmod +x ./gradlew
+ENV PATH="/opt/gradle/bin:${PATH}"
 
-# Download dependencies
-RUN ./gradlew dependencies --no-daemon
-
-# Copy the source code
+# Copy build files
+COPY build.gradle ./
 COPY src/ src/
 
 # Build the application
-RUN ./gradlew build --no-daemon
+RUN gradle build --no-daemon
 
 # Stage 2: Create the runtime image
 FROM adoptopenjdk:11-jre-hotspot
