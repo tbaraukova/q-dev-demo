@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Amazon Ember", Arial, sans-serif; background: #f2f3f3; color: #232f3e; }
+        .header { background: #232f3e; color: white; padding: 20px 0; text-align: center; }
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 30px; margin-bottom: 20px; }
+        .forecast-item { border: 1px solid #d5d9dd; border-radius: 8px; padding: 20px; margin-bottom: 15px; }
+        .forecast-date { font-size: 18px; font-weight: 600; color: #232f3e; margin-bottom: 10px; }
+        .forecast-temp { font-size: 24px; color: #ff9900; font-weight: bold; }
+        .forecast-desc { color: #666; margin: 10px 0; }
+        .forecast-source { font-size: 12px; color: #999; }
+        .btn { background: #ff9900; color: white; padding: 12px 24px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #e88b00; }
+        .city-title { color: #232f3e; margin-bottom: 20px; }
+        .api-error { background-color: #fdf3f3; border-left: 4px solid #d13212; padding: 15px; margin-bottom: 15px; }
+        .api-error .forecast-source { color: #d13212; font-weight: bold; }
+        .api-section { margin-bottom: 30px; }
+        .api-title { font-size: 18px; color: #232f3e; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 1px solid #d5d9dd; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Weather Forecast Service</h1>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2 class="city-title" th:text="'Weather Forecast for ' + ${weatherData.city}"></h2>
+            
+            <!-- Group by source -->
+            <div class="api-section" th:if="${weatherData.forecasts.?[source == 'wttr.in'].size() > 0}">
+                <h3 class="api-title">wttr.in Forecast</h3>
+                <div th:each="forecast : ${weatherData.forecasts.?[source == 'wttr.in']}" class="forecast-item">
+                    <div class="forecast-date" th:text="${forecast.date}"></div>
+                    <div class="forecast-temp" th:text="${forecast.temperature}"></div>
+                    <div class="forecast-desc" th:text="${forecast.description}"></div>
+                    <div class="forecast-source" th:text="'Source: ' + ${forecast.source}"></div>
+                </div>
+            </div>
+            
+            <div class="api-section" th:if="${weatherData.forecasts.?[source == 'GoWeather'].size() > 0}">
+                <h3 class="api-title">GoWeather Forecast</h3>
+                <div th:each="forecast : ${weatherData.forecasts.?[source == 'GoWeather']}" class="forecast-item">
+                    <div class="forecast-date" th:text="${forecast.date}"></div>
+                    <div class="forecast-temp" th:text="${forecast.temperature}"></div>
+                    <div class="forecast-desc" th:text="${forecast.description}"></div>
+                    <div class="forecast-source" th:text="'Source: ' + ${forecast.source}"></div>
+                </div>
+            </div>
+            
+            <!-- Display errors if any -->
+            <div th:if="${weatherData.forecasts.?[source == 'API Error'].size() > 0}">
+                <h3 class="api-title">API Errors</h3>
+                <div th:each="forecast : ${weatherData.forecasts.?[source == 'API Error']}" class="forecast-item api-error">
+                    <div class="forecast-desc" th:text="${forecast.description}"></div>
+                    <div class="forecast-source">Error</div>
+                </div>
+            </div>
+            
+            <a href="/" class="btn">New Search</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Amazon Ember", Arial, sans-serif; background: #f2f3f3; color: #232f3e; }
+        .header { background: #232f3e; color: white; padding: 20px 0; text-align: center; }
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #232f3e; }
+        input, select { width: 100%; padding: 12px; border: 2px solid #d5d9dd; border-radius: 4px; font-size: 16px; }
+        input:focus, select:focus { outline: none; border-color: #ff9900; }
+        .btn { background: #ff9900; color: white; padding: 12px 24px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+        .btn:hover { background: #e88b00; }
+        .error { color: #d13212; font-size: 14px; margin-top: 5px; }
+        .radio-group { display: flex; gap: 20px; }
+        .radio-group label { display: flex; align-items: center; font-weight: normal; }
+        .radio-group input { width: auto; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Weather Forecast Service</h1>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Get Weather Forecast</h2>
+            <form th:action="@{/forecast}" th:object="${weatherRequest}" method="post">
+                <div class="form-group">
+                    <label for="city">City Name:</label>
+                    <input type="text" id="city" th:field="*{city}" placeholder="Enter city name">
+                    <div class="error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Forecast Duration:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" th:field="*{days}" value="1"> 1 Day</label>
+                        <label><input type="radio" th:field="*{days}" value="3"> 3 Days</label>
+                        <label><input type="radio" th:field="*{days}" value="7"> 7 Days</label>
+                    </div>
+                    <div class="error" th:if="${#fields.hasErrors('days')}" th:errors="*{days}"></div>
+                </div>
+                
+                <button type="submit" class="btn">Get Forecast</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
